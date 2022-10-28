@@ -1,7 +1,7 @@
 #ifndef __BPF_HELPERS_H
 #define __BPF_HELPERS_H
 
-#include <uapi/linux/bpf.h>
+#include <linux/bpf.h>
 
 #ifndef __always_inline
 #define __always_inline __attribute__((always_inline))
@@ -37,7 +37,7 @@ static int (*bpf_perf_event_output)(void* ctx, void* map,
 static int (*bpf_skb_get_tunnel_key)(void* ctx, void* key, int size, int flags) = (void*)BPF_FUNC_skb_get_tunnel_key;
 static int (*bpf_skb_set_tunnel_key)(void* ctx, void* key, int size, int flags) = (void*)BPF_FUNC_skb_set_tunnel_key;
 static unsigned long long (*bpf_get_prandom_u32)(void) = (void*)BPF_FUNC_get_prandom_u32;
-static u64 (*bpf_get_current_task)(void) = (void *) BPF_FUNC_get_current_task;
+static unsigned long long  (*bpf_get_current_task)(void) = (void *) BPF_FUNC_get_current_task;
 
 /* llvm builtin functions that eBPF C program may use to
  * emit BPF_LD_ABS and BPF_LD_IND instructions
