@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.html": "njk",
+    "*.cc": "cpp",
+    "bpf_helpers.h": "c",
+    "common.h": "c"
+  }
+}

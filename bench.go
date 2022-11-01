@@ -1,10 +1,12 @@
 package ebpfbench
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"strings"
 	"testing"
+	"time"
 )
 
 func NewEBPFBenchmark(b *testing.B) *EBPFBenchmark {
@@ -33,6 +35,46 @@ func (e *EBPFBenchmark) getAllStats() (map[int]*bpfProgramStats, error) {
 		res[fd] = stats
 	}
 	return res, nil
+}
+
+type BpfProgramStatsEvent struct {
+	BpfProgramStats   map[int]*bpfProgramStats
+	TimestampInSecond int64
+}
+
+func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent, <-chan error) {
+
+	disableFunc, err := enableBPFStats()
+	if err != nil {
+		return nil, nil
+	}
+	out := make(chan *BpfProgramStatsEvent)
+	errc := make(chan error, 1)
+
+	go func() {
+		ticker := time.NewTicker(time.Second)
+
+		for {
+			select {
+			case <-ticker.C:
+				programsStats, err := e.getAllStats()
+				if err != nil {
+					errc <- err
+				}
+				out <- &BpfProgramStatsEvent{
+					BpfProgramStats:   programsStats,
+					TimestampInSecond: time.Now().Unix(),
+				}
+
+			case <-ctx.Done():
+				disableFunc()
+				close(out)
+				close(errc)
+			}
+		}
+	}()
+
+	return out, errc
 }
 
 func (e *EBPFBenchmark) Close() {

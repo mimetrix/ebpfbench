@@ -8,7 +8,7 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-func kprobeAttach(retprobe bool, name string, progFd int) (int, error) {
+func KprobeAttach(retprobe bool, name string, progFd int) (int, error) {
 	var err error
 	attr := unix.PerfEventAttr{}
 	attr.Type, err = kprobePerfType()
@@ -41,7 +41,7 @@ func kprobeAttach(retprobe bool, name string, progFd int) (int, error) {
 	return efd, nil
 }
 
-func kprobeDetach(efd int) error {
+func KprobeDetach(efd int) error {
 	if _, _, err := unix.Syscall(unix.SYS_IOCTL, uintptr(efd), unix.PERF_EVENT_IOC_DISABLE, 0); err != 0 {
 		return fmt.Errorf("error disabling perf event: %w", err)
 	}
