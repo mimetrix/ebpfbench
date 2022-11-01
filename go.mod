@@ -1,4 +1,4 @@
-module github.com/DataDog/ebpfbench
+module github.com/mimetrix/ebpfbench
 
 go 1.15
 

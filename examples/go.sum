@@ -5,6 +5,10 @@ github.com/frankban/quicktest v1.14.0 h1:+cqqvzZV87b4adx/5ayVOaYZ2CrvM4ejQvUdBzP
 github.com/google/go-cmp v0.5.6 h1:BKbKCqvP6I+rmFHt06ZmyQtvB8xAkWdhFyr0ZUNZcxQ=
 github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
+github.com/mimetrix/ebpfbench v0.0.0-20221101023045-d1004c3ce23b h1:RL87Ef32BdykBaXPTfZKBGT8cpZURqK2zIv79nv/3WU=
+github.com/mimetrix/ebpfbench v0.0.0-20221101023045-d1004c3ce23b/go.mod h1:k5o8qWxMVYP+1cn9mc9PMgYSZTM4paoTgR/SBoBCwwA=
+github.com/mimetrix/ebpfbench v0.0.0-20221101024208-be062737d7ae h1:brmQM7/08V8mRhv0UBUon/0eKpAgq3evO9H4K0z3f6M=
+github.com/mimetrix/ebpfbench v0.0.0-20221101024208-be062737d7ae/go.mod h1:S4QsGmO3fF0vOph3eX6zaQlIZq76eCkGEMevOhY9SvE=
 github.com/rogpeppe/go-internal v1.6.1 h1:/FiVV8dS/e+YqF2JvO3yXRFbBLTIuSDkuC7aBOAvL+k=
 golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20201018230417-eeed37f84f13/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
