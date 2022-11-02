@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/DataDog/ebpfbench"
 	"github.com/cilium/ebpf/link"
 	"github.com/cilium/ebpf/rlimit"
+	"github.com/mimetrix/ebpfbench"
 )
 
 //go:generate go run github.com/cilium/ebpf/cmd/bpf2go -cc clang  bpf benchtest.c -- -I../headers

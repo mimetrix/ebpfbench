@@ -1,17 +1,25 @@
 # ebpfbench
+
 profile eBPF programs from Go. Requires Linux kernel 5.1 or greater.
+
+## Examples
+
+```sh
+cd examples/bench
+go run -exec sudo ./bench
+```
 
 ## Usage
 
-`ebpfbench` augments the standard `testing.B` object. 
+`ebpfbench` augments the standard `testing.B` object.
 
 ```go
 func BenchmarkExample(b *testing.B) {
     eb := ebpfbench.NewEBPFBenchmark(b)
     defer eb.Close()
-    
+
     // setup eBPF programs using cilium/ebpf, gobpf, or other libraries.
-    
+
     fd := prog.FD()
     eb.ProfileProgram(fd, "")
     eb.Run(func(b *testing.B) {
@@ -30,3 +38,5 @@ BenchmarkExample/eBPF/kprobe/sys_bind           	       1	       568 ns/op
 BenchmarkExample/eBPF/kprobe/sys_socket         	       3	      1110 ns/op
 BenchmarkExample/eBPF/kprobe/tcp_cleanup_rbuf   	  266952	       295 ns/op
 ```
+
+

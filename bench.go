@@ -11,18 +11,29 @@ import (
 
 func NewEBPFBenchmark(b *testing.B) *EBPFBenchmark {
 	return &EBPFBenchmark{
-		b:     b,
-		progs: make(map[int]string),
+		b:      b,
+		progs:  make(map[int]string),
+		infoCh: make(chan fdNameTuple),
 	}
+}
+
+type fdNameTuple struct {
+	fd   int
+	name string
 }
 
 type EBPFBenchmark struct {
 	b     *testing.B
 	progs map[int]string
+	// infoCh transport the bpf fd and program name.
+	infoCh chan fdNameTuple
 }
 
 func (e *EBPFBenchmark) ProfileProgram(fd int, name string) {
-	e.progs[fd] = name
+	e.infoCh <- fdNameTuple{
+		fd:   fd,
+		name: name,
+	}
 }
 
 func (e *EBPFBenchmark) getAllStats() (map[int]*bpfProgramStats, error) {
@@ -56,6 +67,8 @@ func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent
 
 		for {
 			select {
+			case p := <-e.infoCh:
+				e.progs[p.fd] = p.name
 			case <-ticker.C:
 				programsStats, err := e.getAllStats()
 				if err != nil {
