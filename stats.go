@@ -9,13 +9,13 @@ import (
 
 type disableFunc func() error
 
-var supportsStatsSyscall = supportsBpfEnableStats()()
+var SupportsStatsSyscall = supportsBpfEnableStats()()
 
 func enableBPFStats() (disableFunc, error) {
 	var fd *wrappedFD
 	var err error
 
-	if supportsStatsSyscall {
+	if SupportsStatsSyscall {
 		fd, err = bpfEnableStats()
 		if err != nil && !errors.Is(err, unix.EINVAL) {
 			return nil, err
