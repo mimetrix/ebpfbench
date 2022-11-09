@@ -83,6 +83,7 @@ func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent
 				disableFunc()
 				close(out)
 				close(errc)
+				return
 			}
 		}
 	}()
