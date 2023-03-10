@@ -17,6 +17,13 @@ func NewEBPFBenchmark(b *testing.B) *EBPFBenchmark {
 	}
 }
 
+// create new ebpf benchmark with sysctl proc file
+func NewEBPFBenchmarkWithBpfStatsEnabledFile(b *testing.B, bpfStatsEnabledFile string) *EBPFBenchmark {
+	e := NewEBPFBenchmark(b)
+	bpfSysctlProcfile = bpfStatsEnabledFile
+	return e
+}
+
 type fdNameTuple struct {
 	fd   int
 	name string
@@ -53,11 +60,11 @@ type BpfProgramStatsEvent struct {
 	TimestampInSecond int64
 }
 
-func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent, <-chan error) {
+func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent, <-chan error, error) {
 
 	disableFunc, err := enableBPFStats()
 	if err != nil {
-		return nil, nil
+		return nil, nil, err
 	}
 	out := make(chan *BpfProgramStatsEvent)
 	errc := make(chan error, 1)
@@ -88,7 +95,7 @@ func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent
 		}
 	}()
 
-	return out, errc
+	return out, errc, nil
 }
 
 func (e *EBPFBenchmark) Close() {

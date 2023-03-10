@@ -3,7 +3,6 @@ package ebpfbench
 import (
 	"fmt"
 	"os"
-	"strings"
 )
 
 var bpfSysctlProcfile = "/proc/sys/kernel/bpf_stats_enabled"
@@ -20,9 +19,6 @@ func fileExists(path string) (bool, error) {
 }
 
 func validSysctlPath(path string) error {
-	if !strings.HasPrefix(path, "/proc/sys/kernel/") {
-		return fmt.Errorf("invalid sysctl path %s, it must begin with /proc/sys/kernel/", path)
-	}
 	exists, err := fileExists(path)
 	if err != nil {
 		return err
