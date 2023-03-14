@@ -55,7 +55,7 @@ func readSysctl(path string) ([]byte, error) {
 	if err := validSysctlPath(path); err != nil {
 		return nil, err
 	}
-	f, err := os.OpenFile(path, os.O_WRONLY, 0644)
+	f, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
 		return nil, err
 	}
