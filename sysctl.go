@@ -48,3 +48,25 @@ func writeSysctl(path string, val []byte) error {
 	}
 	return nil
 }
+
+// readSysctl reads a single byte from the sysctl at the given path.
+func readSysctl(path string) ([]byte, error) {
+	val := make([]byte, 1)
+	if err := validSysctlPath(path); err != nil {
+		return nil, err
+	}
+	f, err := os.OpenFile(path, os.O_WRONLY, 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = f.Close() }()
+
+	n, err := f.Read(val)
+	if err != nil {
+		return nil, err
+	}
+	if n != 1 {
+		return nil, fmt.Errorf("read to sysctl %s failed, expected %d got %d", path, 1, n)
+	}
+	return val, nil
+}

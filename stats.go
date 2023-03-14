@@ -29,6 +29,14 @@ func enableBPFStats() (disableFunc, error) {
 	return disableBPFStats(fd), nil
 }
 
+func isBPFStatsEnabled() (bool, error) {
+	val, err := readSysctl(bpfSysctlProcfile)
+	if err != nil {
+		return false, err
+	}
+	return val[0] == '1', nil
+}
+
 func disableBPFStats(fd *wrappedFD) func() error {
 	return func() error {
 		if fd != nil {

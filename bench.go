@@ -60,12 +60,26 @@ type BpfProgramStatsEvent struct {
 	TimestampInSecond int64
 }
 
-func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent, <-chan error, error) {
+func (e *EBPFBenchmark) Start(ctx context.Context, enableBpfStats bool) (<-chan *BpfProgramStatsEvent, <-chan error, error) {
+	var disableFunc func() error
+	var err error
 
-	disableFunc, err := enableBPFStats()
-	if err != nil {
-		return nil, nil, err
+	if enableBpfStats {
+		disableFunc, err = enableBPFStats()
+		if err != nil {
+			return nil, nil, err
+		}
+	} else {
+		isEnabled, err := isBPFStatsEnabled()
+		if err != nil {
+			return nil, nil, err
+		}
+
+		if !isEnabled {
+			return nil, nil, fmt.Errorf("bpf_stats_enabled is disabled")
+		}
 	}
+
 	out := make(chan *BpfProgramStatsEvent)
 	errc := make(chan error, 1)
 
@@ -87,7 +101,9 @@ func (e *EBPFBenchmark) Start(ctx context.Context) (<-chan *BpfProgramStatsEvent
 				}
 
 			case <-ctx.Done():
-				disableFunc()
+				if disableFunc != nil {
+					_ = disableFunc()
+				}
 				close(out)
 				close(errc)
 				return
